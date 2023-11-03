@@ -7,6 +7,7 @@ import { useFonts, NunitoSans_400Regular, NunitoSans_700Bold } from '@expo-googl
 import { Loading } from '@components/Loading';
 
 import theme from './src/theme';
+import { Routes } from './src/routes';
 
 export default function App() {
 
@@ -21,7 +22,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <Loading /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
 
     </ThemeProvider>
   );
