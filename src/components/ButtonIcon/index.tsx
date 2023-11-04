@@ -1,8 +1,8 @@
-import { ElementType } from 'react'
+import { ElementType } from 'react';
 import { TouchableOpacityProps } from 'react-native';
 
-import { IconProps } from 'phosphor-react-native'
-import { useTheme } from 'styled-components/native'
+import { IconProps } from 'phosphor-react-native';
+import { useTheme } from 'styled-components/native';
 
 import { Container, Title, ButtonTypeStyleProps } from './styles';
 

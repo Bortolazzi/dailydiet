@@ -19,7 +19,7 @@ export const Container = styled.TouchableOpacity`
 export const Title = styled.Text`
   ${({ theme }) => css`
     color: ${theme.COLORS_GRAY_600};
-    font-size: ${theme.FONT_SIZE.LG}px;
+    font-size: ${theme.FONT_SIZE.MD}px;
     font-family: ${theme.FONT_FAMILY.REGULAR};
     flex: 1;
     padding-right: 12px;
@@ -29,7 +29,7 @@ export const Title = styled.Text`
 export const Time = styled.Text`
   ${({ theme }) => css`
     color: ${theme.COLORS.GRAY_700};
-    font-size: ${theme.FONT_SIZE.SM}px;
+    font-size: ${theme.FONT_SIZE.XS}px;
     font-family: ${theme.FONT_FAMILY.BOLD};
   `};
 `;
