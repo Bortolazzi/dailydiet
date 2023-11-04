@@ -1,8 +1,6 @@
 import styled from 'styled-components/native';
 import { CaretLeft } from 'phosphor-react-native';
 
-//flex-direction: row - alinha os elementos um do lado do outro
-
 export const Container = styled.View`
     width:100%;
 
