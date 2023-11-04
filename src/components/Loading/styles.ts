@@ -10,5 +10,6 @@ export const Container = styled.View`
 
 //usando o attrs atribuimos os atributos diretamente, quando não é possível usar o css
 export const LoadingIndicator = styled.ActivityIndicator.attrs(({ theme }) => ({
-    color: theme.COLORS.GRAY_700
+    color: theme.COLORS.GRAY_700,
+    size: 'large'
 }))``;

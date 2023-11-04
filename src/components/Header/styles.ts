@@ -9,13 +9,11 @@ export const Container = styled.View`
 `;
 
 export const Logo = styled.Image`
-    margin-left: 24px;
     width: 78px;
     height: 37px;
 `;
 
 export const Avatar = styled.Image`
-    margin-right: 24px;
     width: 40px;
     height: 40px;
 `;
