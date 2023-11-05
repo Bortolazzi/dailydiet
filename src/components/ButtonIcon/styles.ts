@@ -26,6 +26,6 @@ export const Title = styled(Text) <Props>`
     ${({ theme, type }) => css`
         font-size:  ${theme.FONT_SIZE.SM}px;
         font-family: ${theme.FONT_FAMILY.BOLD};
-        color: ${type === 'LIGHT' ? theme.COLORS.GRAY_700 : theme.COLORS.WHITE};
+        color: ${type === 'LIGHT' ? theme.COLORS.GRAY_700 : theme.COLORS.GRAY_100};
     `};
 `;

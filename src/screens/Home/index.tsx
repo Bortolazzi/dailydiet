@@ -11,7 +11,7 @@ import { ButtonIcon } from '@components/ButtonIcon';
 import { EmptyListPanel } from '@components/EmptyListPanel';
 
 export function Home() {
-
+    
     const DATA = [
         {
             title: '03/11/2023',

@@ -1,9 +1,30 @@
-import { Container, Panel, QuantityLabel, DescriptionLabel, Information, Page, Header } from './styles';
+import { Container, Panel, QuantityLabel, DescriptionLabel, Information, Page, Percentage, Header, BackIconContainer } from './styles';
+
+import { useTheme } from 'styled-components/native'
+import { ArrowLeft } from 'phosphor-react-native'
+import { useNavigation } from '@react-navigation/native';
 
 export function Statistics() {
+    const theme = useTheme();
+
+    const navigation = useNavigation();
+
+    function handleGoBack() {
+        navigation.navigate('home');
+    }
+
+    const containerType = 0 > 1 ? 'SUCCESS' : 'DANGER';
+
     return (
-        <Container>
-            <Header></Header>
+        <Container type={containerType}>
+            <Header>
+                <BackIconContainer onPress={handleGoBack}>
+                    <ArrowLeft size={24} weight="regular" color={containerType === 'SUCCESS' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK} />
+                </BackIconContainer>
+                <Percentage>100%</Percentage>
+                <DescriptionLabel>das refeições dentro da dieta</DescriptionLabel>
+            </Header>
+
             <Page>
                 <Panel type='PRIMARY' size='FULL' >
                     <QuantityLabel>22</QuantityLabel>
@@ -26,4 +47,4 @@ export function Statistics() {
             </Page>
         </Container>
     );
-}
+} 

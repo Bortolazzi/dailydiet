@@ -4,36 +4,59 @@ import styled, { css } from 'styled-components/native';
 
 export type PanelTypes = 'PRIMARY' | 'SUCCESS' | 'DANGER';
 export type PanelSizes = 'FULL' | 'HALF';
+export type ContainerStyle = 'SUCCESS' | 'DANGER';
 
 type PanelProps = {
-    type?: PanelTypes;
-    size?: PanelSizes;
+  type?: PanelTypes;
+  size?: PanelSizes;
 }
 
-export const Container = styled(SafeAreaView)`
-  flex: 1;
-  padding-top: 24px;
+type ContainerProps = {
+  type: ContainerStyle
+}
+
+export const Container = styled(SafeAreaView) <ContainerProps>`
+    flex: 1;
+    padding: 24px 0 0;
+    position: relative;
+
+    ${({ theme, type }) => css`
+        background-color: ${type === 'SUCCESS' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+    `};
 `;
 
 export const Header = styled.View`
-    
-    background-color: ${({ theme }) => theme.COLORS.GREEN_LIGHT};
-    padding: 24px;
-    margin-top: 33px;
+  padding-top: 24px;
+  align-items: center;
+  justify-content: center;
+  ${({ theme }) => css`
+      background-color: ${theme.COLORS.TRANSPARENT};
+  `};
+`;
 
+export const BackIconContainer = styled.TouchableOpacity`
+  position: absolute;
+  top: 1px;
+  left: 24px;
+  width: 56px;
+  height: 56px;
+`;
 
-    width: 100%;
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+export const Percentage = styled.Text`
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.BOLD};
+    font-size: ${theme.FONT_SIZE.XXL}px;
+    color: ${theme.COLORS.GRAY_700};
+  `};  
 `;
 
 export const Page = styled.View`
     flex: 1;
-    background-color: ${({ theme }) => theme.COLORS.WHITE};
+    background-color: ${({ theme }) => theme.COLORS.GRAY_100};
     padding: 24px;
     margin-top: 33px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 `;
 
 export const Panel = styled(View) <PanelProps>`
