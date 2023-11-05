@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Home } from '@screens/Home';
 import { Statistics } from '@screens/Statistics';
+import { Feedback } from '@screens/Feedback';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -14,7 +15,7 @@ export function AppRoutes() {
         //Por default o Navigations insere um cabeçalho com o nome da rota (faixa branca com escrita name)
         //Para remover é necessário informar na propriedade screenOptions > subpropriedade headerShown = false
         <Navigator
-            initialRouteName="home"
+            initialRouteName="feedback"
             screenOptions={{ headerShown: false }}
         >
             <Screen
@@ -25,6 +26,11 @@ export function AppRoutes() {
             <Screen
                 name="statistics"
                 component={Statistics}
+            />
+
+            <Screen
+                name="feedback"
+                component={Feedback}
             />
         </Navigator>
     );

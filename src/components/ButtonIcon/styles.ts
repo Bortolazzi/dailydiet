@@ -15,6 +15,7 @@ export const Container = styled(TouchableOpacity) <Props>`
     min-height: 50px;
     max-height: 50px;
     border-radius: 6px;
+    width: 100%;
 
     ${({ theme, type }) => css`
         background-color: ${type == 'LIGHT' ? theme.COLORS.WHITE : theme.COLORS.GRAY_600};

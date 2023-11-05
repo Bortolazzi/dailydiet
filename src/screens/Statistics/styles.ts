@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styled, { css } from 'styled-components/native';
 
 export type PanelTypes = 'PRIMARY' | 'SUCCESS' | 'DANGER';

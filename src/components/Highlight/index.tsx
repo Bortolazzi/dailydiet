@@ -8,10 +8,10 @@ import {
   Icon
 } from './styles'
 
-import { HighlightProps } from './types'
+import { HighlightProps } from './types';
 
-import { toPercentage } from '@utils/convertHelper'
-import { isDietGoal } from '@utils/dietGoal'
+import { toPercentage } from '@utils/convertHelper';
+import { isDietGoal } from '@utils/dietGoal';
 
 export function Highlight(props: HighlightProps) {
   const navigation = useNavigation();

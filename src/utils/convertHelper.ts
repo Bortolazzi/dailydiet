@@ -4,6 +4,5 @@ export const toPercentage = (number: number) => {
         .replace('.', ',')
         .padStart(2, '0')}%`
     }
-    return '0,00%'
+    return '0,00%';
   }
-  

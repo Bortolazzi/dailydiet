@@ -1,7 +1,17 @@
-import { Container, Panel, QuantityLabel, DescriptionLabel, Information, Page, Percentage, Header, BackIconContainer } from './styles';
+import { 
+    Container, 
+    Panel, 
+    QuantityLabel, 
+    DescriptionLabel, 
+    Information, 
+    Page, 
+    Percentage, 
+    Header, 
+    BackIconContainer 
+} from './styles';
 
-import { useTheme } from 'styled-components/native'
-import { ArrowLeft } from 'phosphor-react-native'
+import { useTheme } from 'styled-components/native';
+import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export function Statistics() {

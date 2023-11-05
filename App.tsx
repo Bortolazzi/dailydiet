@@ -8,7 +8,6 @@ import { Loading } from '@components/Loading';
 
 import theme from './src/theme';
 import { Routes } from './src/routes';
-import { Statistics } from '@screens/Statistics';
 
 export default function App() {
 

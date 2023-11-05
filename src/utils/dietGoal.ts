@@ -1,3 +1,3 @@
-const dietGoal = 70 / 100
+const dietGoal = 70 / 100;
 
-export const isDietGoal = (current: number) => current >= dietGoal
+export const isDietGoal = (current: number) => current >= dietGoal;
