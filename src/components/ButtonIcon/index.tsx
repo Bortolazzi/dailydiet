@@ -4,7 +4,11 @@ import { TouchableOpacityProps } from 'react-native';
 import { IconProps } from 'phosphor-react-native';
 import { useTheme } from 'styled-components/native';
 
-import { Container, Title, ButtonTypeStyleProps } from './styles';
+import { 
+    Container, 
+    Title, 
+    ButtonTypeStyleProps 
+} from './styles';
 
 type Props = TouchableOpacityProps & {
     title: string;

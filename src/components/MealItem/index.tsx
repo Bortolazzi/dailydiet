@@ -1,4 +1,10 @@
-import {Container, Time, VDivider, Title, MealType} from './styles';
+import {
+  Container,
+  Time,
+  VDivider,
+  Title,
+  MealType
+} from './styles';
 import { MealItemProps } from './types';
 
 export function MealItem(props: MealItemProps) {

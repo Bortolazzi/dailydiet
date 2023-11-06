@@ -1,4 +1,8 @@
-import { Container, Logo, Avatar } from './styles';
+import { 
+    Container, 
+    Logo, 
+    Avatar 
+} from './styles';
 
 import logoImg from '@assets/logo.png';
 import avatarImg from '@assets/avatar.png';

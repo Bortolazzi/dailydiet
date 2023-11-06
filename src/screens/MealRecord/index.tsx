@@ -1,12 +1,28 @@
-import { Container, Page, Label, InputText, AreaText, Row, Column, Footer } from './styles';
+import { useState } from 'react';
 import { useTheme } from 'styled-components/native';
 
-import { HeaderNavigation } from '@components/HeaderNavigation';
 import { ButtonIcon } from '@components/ButtonIcon';
 import { ButtonStatus } from '@components/ButtonStatus';
+import { HeaderNavigation } from '@components/HeaderNavigation';
+
+import {
+    Container,
+    Page,
+    Label,
+    InputText,
+    AreaText,
+    Row,
+    Column,
+    Footer
+} from './styles';
 
 export function MealRecord() {
     const theme = useTheme();
+    const [isInDiet, setIsInDiet] = useState<boolean>(true);
+
+    function handleStatusMeal() {
+
+    }
 
     return (
         <Container>
@@ -33,10 +49,10 @@ export function MealRecord() {
                 <Label>Está dentro da dieta?</Label>
                 <Row>
                     <Column>
-                        <ButtonStatus type='withinDiet' isActive={false}/>
+                        <ButtonStatus type='SUCCESS' isActive={isInDiet} onPress={() => setIsInDiet(true)} />
                     </Column>
                     <Column>
-                        <ButtonStatus type='offDiet' isActive={true} />
+                        <ButtonStatus type='DANGER' isActive={!isInDiet} onPress={() => setIsInDiet(false)} />
                     </Column>
                 </Row>
 

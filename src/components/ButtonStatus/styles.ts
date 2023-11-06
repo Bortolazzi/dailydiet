@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native'
-
 import { TouchableOpacityProps } from 'react-native'
 
 export type DietSelectProps = TouchableOpacityProps & ContainerProps
@@ -9,7 +8,7 @@ export type ContainerProps = StatusContainerProps & {
 }
 
 export type StatusContainerProps = {
-    type: 'offDiet' | 'withinDiet'
+    type: 'DANGER' | 'SUCCESS'
 }
 
 export const Container = styled.TouchableOpacity<ContainerProps>`
@@ -29,13 +28,13 @@ export const Container = styled.TouchableOpacity<ContainerProps>`
 
     flex-direction: row;
     ${isActive &&
-        type === 'withinDiet' &&
+        type === 'SUCCESS' &&
         css`
       border-color: ${theme.COLORS.GREEN_DARK};
       background-color: ${theme.COLORS.GREEN_MID};
     `}
     ${isActive &&
-        type === 'offDiet' &&
+        type === 'DANGER' &&
         css`
       border-color: ${theme.COLORS.RED_DARK};
       background-color: ${theme.COLORS.RED_MID};
@@ -59,7 +58,7 @@ export const Status = styled.View<StatusContainerProps>`
     background-color: ${theme.COLORS.RED_DARK};
     margin-right: 8px;
     border-radius: 999px;
-    ${type === 'withinDiet' &&
+    ${type === 'SUCCESS' &&
         css`
       background-color: ${theme.COLORS.GREEN_DARK};
     `}

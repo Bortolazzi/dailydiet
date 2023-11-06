@@ -1,4 +1,4 @@
-import { SectionList, Text } from 'react-native';
+import { SectionList } from 'react-native';
 import { Plus } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 

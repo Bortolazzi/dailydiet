@@ -1,8 +1,8 @@
 import { DietSelectProps, Container, Status, Title } from './styles'
 
 export const data = {
-    offDiet: 'Não',
-    withinDiet: 'Sim',
+    DANGER: 'Não',
+    SUCCESS: 'Sim',
 }
 
 export function ButtonStatus(props: DietSelectProps) {

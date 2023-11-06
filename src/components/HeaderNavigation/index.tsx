@@ -1,4 +1,8 @@
-import { Container, BackIconContainer, Title } from './styles';
+import { 
+    Container, 
+    BackIconContainer, 
+    Title 
+} from './styles';
 
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
