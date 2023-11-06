@@ -57,6 +57,8 @@ export const Page = styled.View`
     margin-top: 33px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 `;
 
 export const Panel = styled(View) <PanelProps>`

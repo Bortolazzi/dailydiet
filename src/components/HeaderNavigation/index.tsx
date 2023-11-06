@@ -1,15 +1,16 @@
-import { BackIcon, BackButton, Container, Logo } from './styles';
+import { Container, BackIconContainer, Title } from './styles';
 
 import { useNavigation } from '@react-navigation/native';
-
-import logoImg from '@assets/logo.png';
+import { useTheme } from 'styled-components/native';
+import { ArrowLeft } from 'phosphor-react-native';
 
 type Props = {
-    showBackButton?: boolean;
+    title: string;
 }
 
-export function Header({ showBackButton = false }: Props) {
+export function HeaderNavigation({ title }: Props) {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     function handleGoBack() {
         navigation.navigate('home');
@@ -17,14 +18,10 @@ export function Header({ showBackButton = false }: Props) {
 
     return (
         <Container>
-            {
-                showBackButton &&
-                <BackButton onPress={handleGoBack}>
-                    <BackIcon />
-                </BackButton>
-            }
-
-            <Logo source={logoImg} />
+            <BackIconContainer onPress={handleGoBack}>
+                <ArrowLeft size={24} weight="bold" color={theme.COLORS.GRAY_700} />
+            </BackIconContainer>
+            <Title>{title}</Title>
         </Container>
     );
 }

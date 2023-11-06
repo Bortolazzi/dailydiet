@@ -1,5 +1,6 @@
 import { SectionList, Text } from 'react-native';
 import { Plus } from 'phosphor-react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Container, Title } from './styles';
 
@@ -11,7 +12,8 @@ import { ButtonIcon } from '@components/ButtonIcon';
 import { EmptyListPanel } from '@components/EmptyListPanel';
 
 export function Home() {
-    
+    const navigation = useNavigation();
+
     const DATA = [
         {
             title: '03/11/2023',
@@ -40,6 +42,10 @@ export function Home() {
         }
     ];
 
+    function handleAddMeal(){
+        navigation.navigate('mealRecord');
+    }
+
     return (
         <Container>
             <Header />
@@ -55,19 +61,8 @@ export function Home() {
                 title='Nova Refeição'
                 type='DARK'
                 Icon={(p) => <Plus {...p} />}
+                onPress={handleAddMeal}
             />
-
-            {/* <ButtonIcon
-                title='Nova Refeição'
-                type='LIGHT'
-                Icon={(p) => <PencilSimpleLine {...p} />}
-            />
-
-            <ButtonIcon
-                title='Nova Refeição'
-                type='LIGHT'
-                Icon={(p) => <Trash {...p} />}
-            /> */}
 
             <SectionList
                 sections={DATA}
