@@ -68,3 +68,31 @@ export const Footer = styled.View`
     padding: 8px 24px;
   `}
 `;
+
+export const Status = styled.View`
+    padding: 8px 16px;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 999px;
+    margin-right: auto;
+    margin-top: 20px;
+  ${({ theme }) => css`
+    background-color: ${theme.COLORS.GRAY_200};
+  `};
+`;
+
+export const StatusTitle = styled.Text`
+  ${({ theme }) => css`
+    text-align: center;
+    color: ${theme.COLORS.GRAY_700};
+    font-size: ${theme.FONT_SIZE.SM}px;
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+  `};
+`;
+
+export const StatusIndicator = styled.View`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+`;

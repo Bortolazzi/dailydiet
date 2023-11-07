@@ -13,10 +13,14 @@ import {
     MealDescription,
     Label,
     MealTime,
-    Footer
+    Footer,
+    Status,
+    StatusTitle,
+    StatusIndicator
 } from './styles';
 
 export function MealDetail() {
+    const theme = useTheme()
     return (
         <Container>
             <HeaderNavigation title="Refeição" />
@@ -25,7 +29,10 @@ export function MealDetail() {
                 <MealDescription>Lasanha com salada feita pela cheff renomada com 199 estrelas michelin Jaqueline da Silva Horvath Bortolazzi Juninho</MealDescription>
                 <Label>Data e Hora</Label>
                 <MealTime>12/08/2022 às 20:00</MealTime>
-
+                <Status>
+                    <StatusIndicator style={{ backgroundColor: theme.COLORS.GREEN_DARK }} />
+                    <StatusTitle>dentro da dieta</StatusTitle>
+                </Status>
                 <Footer>
                     <ButtonIcon
                         title='Editar refeição'

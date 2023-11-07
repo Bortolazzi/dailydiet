@@ -1,3 +1,4 @@
+import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled, { css } from 'styled-components/native';
 
@@ -46,24 +47,6 @@ export const InputText = styled.TextInput`
   `};  
 `;
 
-export const AreaText = styled.TextInput.attrs({
-    numberOfLines: 4,
-    multiline: true
-})`
-    min-height: 120px;
-    max-height: 120px;
-    border-radius: 6px;
-    padding: 16px;
-    margin-bottom: 24px;
-
-  ${({ theme }) => css`
-        font-family: ${theme.FONT_FAMILY.REGULAR};
-        font-size: ${theme.FONT_SIZE.MD}px;
-        color: ${theme.COLORS.GRAY_700};
-        border: 1px solid ${theme.COLORS.GRAY_400};
-  `};  
-`;
-
 export const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -83,4 +66,23 @@ export const Footer = styled.View`
     right: 0;
     padding: 8px 24px;
   `}
+`;
+
+export const AreaText = styled(TextInput).attrs(({theme}) => ({
+    numberOfLines: 4,
+    multiline: true,
+    placeholderTextColor: theme.COLORS.GRAY_400,
+}))`
+    min-height: 120px;
+    max-height: 120px;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 24px;
+
+  ${({ theme }) => css`
+        font-family: ${theme.FONT_FAMILY.REGULAR};
+        font-size: ${theme.FONT_SIZE.MD}px;
+        color: ${theme.COLORS.GRAY_700};
+        border: 1px solid ${theme.COLORS.GRAY_400};
+  `};  
 `;
