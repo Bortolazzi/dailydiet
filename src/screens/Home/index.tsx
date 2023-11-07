@@ -42,8 +42,12 @@ export function Home() {
         }
     ];
 
-    function handleAddMeal(){
+    function handleAddMeal() {
         navigation.navigate('mealRecord');
+    }
+
+    function handleDetailMeal() {
+        navigation.navigate('mealDetail');
     }
 
     return (
@@ -68,7 +72,12 @@ export function Home() {
                 sections={DATA}
                 keyExtractor={(item, index) => item.label + index}
                 renderItem={({ item }) => (
-                    <MealItem label={item.label} time={item.time} isSuccess={item.isSuccess} />
+                    <MealItem
+                        label={item.label}
+                        time={item.time}
+                        isSuccess={item.isSuccess}
+                        onPress={handleDetailMeal}
+                    />
                 )}
                 renderSectionHeader={({ section: { title } }) => (
                     <MealDate date={title} />

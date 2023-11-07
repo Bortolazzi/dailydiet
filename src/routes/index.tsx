@@ -4,7 +4,6 @@ import { AppRoutes } from './app.routes';
 
 import { View } from 'react-native';
 
-//Retornamos um container cchamando as rotas que foram configuradas no app.routes.tsx
 export function Routes() {
     const { COLORS } = useTheme();
     return (
