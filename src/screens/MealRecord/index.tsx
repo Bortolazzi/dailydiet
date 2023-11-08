@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { AppError } from '@utils/AppError';
+import * as formatHelper from '@utils/formatHelper';
+import * as convertHelper from '@utils/convertHelper';
 
 import { ButtonIcon } from '@components/ButtonIcon';
 import { ButtonStatus } from '@components/ButtonStatus';
@@ -19,35 +21,38 @@ import {
     Footer
 } from './styles';
 
-import * as formatHelper from '@utils/formatHelper';
 import { MealData } from '@models/index';
+import * as MealRepository from '@storage/repositories/mealRepository';
 
 export function MealRecord() {
-    
+    const route = useRoute();
+    const navigation = useNavigation();
+
+    const { mealId } = route.params as { mealId: string | null };
+
     const [meal, setMeal] = useState<MealData>({} as MealData);
 
     const [dateValue, setDateValue] = useState<string>(formatHelper.currentDateToString());
     const [hourValue, setHourValue] = useState<string>(formatHelper.currentHourToString());
+    const [isInDiet, setIsInDiet] = useState<boolean>(true);
 
     function handleDateValue(text: string) {
         text = text.replace(/\D/g, "");
         text = text.replace(/^(\d{2})(\d)/, "$1/$2");
         text = text.replace(/^(\d{2})\/(\d{2})(\d)/, "$1/$2/$3");
-        setMeal({...meal, date: text});
         setDateValue(text);
     }
 
     function handleHourValue(text: string) {
         text = text.replace(/\D/g, "");
         text = text.replace(/^(\d{2})(\d)/, "$1:$2");
-        setMeal({...meal, time: text});
         setHourValue(text);
     }
 
-    function validateDate() {
+    function validateDate(): boolean {
         try {
             if (dateValue.length != 10) {
-                throw new AppError("É necessário preencher a data com um valor completo.");
+                return false;
             }
 
             const day = parseInt(dateValue.split('/')[0]);
@@ -57,54 +62,92 @@ export function MealRecord() {
             const dateTest = new Date(year, month - 1, day);
             const currentDate = new Date();
 
-            if ((dateTest.getFullYear() < currentDate.getFullYear()) ||
-                (dateTest.getFullYear() > currentDate.getFullYear()) ||
+            if ((dateTest.getFullYear() > currentDate.getFullYear()) ||
                 (dateTest.getFullYear() != year) ||
                 ((dateTest.getMonth() + 1) != month) ||
                 (dateTest.getDate() != day)) {
-                throw new AppError("Data inválida, verifique.");
+                return false;
             }
 
             return true;
-        } catch (exception) {
-            if (exception instanceof AppError) {
-                Alert.alert('Data Inválida', exception.message);
-            } else {
-                Alert.alert('Data Inválida', 'Data inválida, verifique.');
-            }
-
+        } catch {
             return false;
         }
     }
 
-    function validateHour() {
+    function validateHour(): boolean {
         try {
             if (hourValue.length != 5) {
-                throw new AppError("É necessário preencher a hora com um valor completo.");
+                return false;
             }
 
             const hour = parseInt(hourValue.split(':')[0]);
             const minutes = parseInt(hourValue.split(':')[1]);
 
             if (hour > 23 || minutes > 59) {
-                throw new AppError("Hora inválida, verifique.");
+                return false;
             }
 
             return true;
-        } catch (exception) {
-            if (exception instanceof AppError) {
-                Alert.alert('Hora Inválida', exception.message);
-            } else {
-                Alert.alert('Hora Inválida', 'Hora inválida, verifique.');
+        } catch {
+            return false;
+        }
+    }
+
+    function validateMealInfos(): string {
+        if (meal.name === undefined || meal.name.length <= 1) {
+            return "Informe o nome da sua refeição para continuar."
+        }
+
+        if (meal.description === undefined || meal.description.length <= 1) {
+            return "Descreva os ingredientes da sua refeição para continuar."
+        }
+
+        if (!validateDate()) {
+            return "Informe uma data de refeição válida para continuar."
+        }
+
+        if (!validateHour()) {
+            return "Informe uma hora de refeição válida para continuar."
+        }
+
+        return "";
+    }
+
+    async function keepMealAsync() {
+        try {
+            const validationMessage = validateMealInfos();
+            if (validationMessage.length > 0) {
+                throw new AppError(validationMessage);
             }
 
-            return false;
+            const fullDate = convertHelper.dateAndTimeToDateTime(dateValue, hourValue);
+            const id = mealId ? mealId : `${fullDate.toISOString()}`;
+
+            await MealRepository.keepAsync({
+                id,
+                name: meal.name.trim(),
+                description: meal.description.trim(),
+                isInDiet,
+                date: dateValue,
+                time: hourValue,
+                fullDate
+            }, mealId);
+
+            navigation.navigate("feedback", { isInDiet });
+        } catch (exception) {
+            if (exception instanceof AppError) {
+                Alert.alert('Refeição', exception.message);
+            } else {
+                console.error(exception);
+                Alert.alert('Refeição', 'Ocorreu um erro ao salvar a refeição.');
+            }
         }
     }
 
     return (
         <Container>
-            <HeaderNavigation title="Nova refeição" />
+            <HeaderNavigation title={!mealId ? 'Nova refeição' : 'Editar refeição'} />
 
             <Page>
                 <Label>Nome</Label>
@@ -116,7 +159,7 @@ export function MealRecord() {
                 />
 
                 <Label>Descrição</Label>
-                <AreaText 
+                <AreaText
                     value={meal.description}
                     placeholder='Descreva os ingredientes da sua refeição'
                     onChangeText={(text) => setMeal({ ...meal, description: text })}
@@ -130,7 +173,6 @@ export function MealRecord() {
                             onChangeText={(text) => handleDateValue(text)}
                             maxLength={10}
                             keyboardType='numeric'
-                            onBlur={validateDate}
                         />
                     </Column>
                     <Column>
@@ -140,7 +182,6 @@ export function MealRecord() {
                             onChangeText={(text) => handleHourValue(text)}
                             maxLength={5}
                             keyboardType='numeric'
-                            onBlur={validateHour}
                         />
                     </Column>
                 </Row>
@@ -148,15 +189,18 @@ export function MealRecord() {
                 <Label>Está dentro da dieta?</Label>
                 <Row>
                     <Column>
-                        <ButtonStatus type='SUCCESS' isActive={meal.isInDiet} onPress={() => setMeal({ ...meal, isInDiet: true })} />
+                        <ButtonStatus type='SUCCESS' isActive={isInDiet} onPress={() => setIsInDiet(true)} />
                     </Column>
                     <Column>
-                        <ButtonStatus type='DANGER' isActive={!meal.isInDiet} onPress={() => setMeal({ ...meal, isInDiet: false })} />
+                        <ButtonStatus type='DANGER' isActive={!isInDiet} onPress={() => setIsInDiet(false)} />
                     </Column>
                 </Row>
 
                 <Footer>
-                    <ButtonIcon title='Cadastrar refeição' />
+                    <ButtonIcon
+                        title={!mealId ? 'Cadastrar refeição' : 'Salvar alterações'}
+                        onPress={keepMealAsync}
+                    />
                 </Footer>
 
             </Page>

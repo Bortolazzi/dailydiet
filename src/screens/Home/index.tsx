@@ -43,7 +43,7 @@ export function Home() {
     ];
 
     function handleAddMeal() {
-        navigation.navigate('mealRecord');
+        navigation.navigate('mealRecord', { mealId: null });
     }
 
     function handleDetailMeal() {

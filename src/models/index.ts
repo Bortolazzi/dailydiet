@@ -5,6 +5,7 @@ export type MealData = {
     isInDiet: boolean;
     date: string;
     time: string;
+    fullDate: Date;
 }
 
 export type StatisticRecord = {

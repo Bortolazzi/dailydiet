@@ -25,6 +25,7 @@ export const Title = styled.Text<TitleProps>`
 
 export const Subtitle = styled.Text`
     margin-top: 8px;
+    text-align: center;
     ${({ theme }) => css`
         color: ${theme.COLORS.GRAY_700};
         font-size: ${theme.FONT_SIZE.MD}px;
