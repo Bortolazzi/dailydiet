@@ -14,3 +14,8 @@ export type StatisticRecord = {
     totalSuccess: number;
     maxSequence: number;
 }
+
+export type MealByDate = {
+    title: string;
+    data: MealData[]
+}

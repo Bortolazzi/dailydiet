@@ -1,6 +1,7 @@
-import { SectionList } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Alert, SectionList } from 'react-native';
 import { Plus } from 'phosphor-react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { Container, Title } from './styles';
 
@@ -10,45 +11,34 @@ import { MealDate } from '@components/MealDate';
 import { Highlight } from '@components/Highlight';
 import { ButtonIcon } from '@components/ButtonIcon';
 import { EmptyListPanel } from '@components/EmptyListPanel';
+import * as mealRepository from '@storage/repositories/mealRepository';
+import { MealByDate } from '@models/index';
 
 export function Home() {
     const navigation = useNavigation();
-
-    const DATA = [
-        {
-            title: '03/11/2023',
-            data: [
-                { 'label': 'Pão com Ovo', 'isSuccess': true, 'time': '08:00' },
-                { 'label': 'Mamão picadinho', 'isSuccess': true, 'time': '10:00' },
-                { 'label': 'Lasanha com salada', 'isSuccess': true, 'time': '13:00' },
-                { 'label': 'Pizza', 'isSuccess': false, 'time': '20:00' },
-                { 'label': 'Chocolate', 'isSuccess': false, 'time': '20:30' },
-                { 'label': 'Sorvete', 'isSuccess': false, 'time': '21:00' },
-            ]
-        },
-        {
-            title: '04/11/2023',
-            data: [
-                { 'label': 'Pão com Ovo', 'isSuccess': true, 'time': '08:00' },
-                { 'label': 'Mamão picadinho', 'isSuccess': true, 'time': '10:00' },
-                { 'label': 'Lasanha com salada', 'isSuccess': true, 'time': '13:00' },
-                { 'label': 'Pizza', 'isSuccess': false, 'time': '20:00' },
-                { 'label': 'Chocolate', 'isSuccess': false, 'time': '20:30' },
-                { 'label': 'Sorvete', 'isSuccess': false, 'time': '21:00' },
-                { 'label': 'Pate com salada', 'isSuccess': false, 'time': '21:30' },
-                { 'label': 'Xuxu com couve', 'isSuccess': false, 'time': '22:30' },
-                { 'label': 'Whey protein', 'isSuccess': false, 'time': '23:30' },
-            ],
-        }
-    ];
-
+    
+    const [mealDates, setMealDates] = useState<MealByDate[]>([]);
+    
     function handleAddMeal() {
         navigation.navigate('mealRecord', { mealId: null });
     }
 
-    function handleDetailMeal() {
-        navigation.navigate('mealDetail');
+    function handleDetailMeal(mealId: string) {
+        navigation.navigate('mealDetail', { mealId });
     }
+
+    async function fetchMeals() {
+        try {
+            const mealsGroupedByDate = await mealRepository.groupByDateAsync();
+            setMealDates(mealsGroupedByDate);
+        } catch (exception) {
+            Alert.alert('Refeições', 'Ocorreu um erro ao carregar as refeições');
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        fetchMeals();
+      }, []));
 
     return (
         <Container>
@@ -69,14 +59,14 @@ export function Home() {
             />
 
             <SectionList
-                sections={DATA}
-                keyExtractor={(item, index) => item.label + index}
+                sections={mealDates}
+                keyExtractor={(item, index) => item.id + index}
                 renderItem={({ item }) => (
                     <MealItem
-                        label={item.label}
+                        label={item.name}
                         time={item.time}
-                        isSuccess={item.isSuccess}
-                        onPress={handleDetailMeal}
+                        isSuccess={item.isInDiet}
+                        onPress={()=> handleDetailMeal(item.id)}
                     />
                 )}
                 renderSectionHeader={({ section: { title } }) => (
