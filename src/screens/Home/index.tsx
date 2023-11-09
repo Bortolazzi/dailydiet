@@ -11,13 +11,15 @@ import { MealDate } from '@components/MealDate';
 import { Highlight } from '@components/Highlight';
 import { ButtonIcon } from '@components/ButtonIcon';
 import { EmptyListPanel } from '@components/EmptyListPanel';
+
 import * as mealRepository from '@storage/repositories/mealRepository';
-import { MealByDate } from '@models/index';
+import { MealByDate, StatisticData } from '@models/index';
 
 export function Home() {
     const navigation = useNavigation();
     
     const [mealDates, setMealDates] = useState<MealByDate[]>([]);
+    const [statistic, setStatistic] = useState<StatisticData>({} as StatisticData);
     
     function handleAddMeal() {
         navigation.navigate('mealRecord', { mealId: null });
@@ -27,17 +29,19 @@ export function Home() {
         navigation.navigate('mealDetail', { mealId });
     }
 
-    async function fetchMeals() {
+    async function fetchMealsAsync() {
         try {
             const mealsGroupedByDate = await mealRepository.groupByDateAsync();
             setMealDates(mealsGroupedByDate);
+            const statisticData = await mealRepository.getStatistcsAsync();
+            setStatistic(statisticData);
         } catch (exception) {
             Alert.alert('Refeições', 'Ocorreu um erro ao carregar as refeições');
         }
     }
 
     useFocusEffect(useCallback(() => {
-        fetchMeals();
+        fetchMealsAsync();
       }, []));
 
     return (
@@ -45,7 +49,7 @@ export function Home() {
             <Header />
 
             <Highlight
-                percentage={0.65}
+                percentage={statistic.percentage}
                 subtitle='das refeições dentro da dieta'
             />
 

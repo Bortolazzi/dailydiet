@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { AppError } from '@utils/AppError';
 import * as formatHelper from '@utils/formatHelper';
@@ -22,7 +22,7 @@ import {
 } from './styles';
 
 import { MealData } from '@models/index';
-import * as MealRepository from '@storage/repositories/mealRepository';
+import * as mealRepository from '@storage/repositories/mealRepository';
 
 export function MealRecord() {
     const route = useRoute();
@@ -124,7 +124,7 @@ export function MealRecord() {
             const fullDate = convertHelper.dateAndTimeToDateTime(dateValue, hourValue);
             const id = mealId ? mealId : `${fullDate.toISOString()}`;
 
-            await MealRepository.keepAsync({
+            await mealRepository.keepAsync({
                 id,
                 name: meal.name.trim(),
                 description: meal.description.trim(),
@@ -144,6 +144,27 @@ export function MealRecord() {
             }
         }
     }
+
+    async function loadMealAsync() {
+        if (!mealId) {
+            return;
+        }
+
+        try {
+            const mealLoaded = await mealRepository.getByIdAsync(mealId);
+            setMeal(mealLoaded);
+            setIsInDiet(mealLoaded.isInDiet);
+            setDateValue(mealLoaded.date);
+            setHourValue(mealLoaded.time);
+        } catch (exception) {
+            console.error(exception);
+            Alert.alert('Refeição', 'Ocorreu um erro ao carregar a refeição.');
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        loadMealAsync();
+    }, []));
 
     return (
         <Container>

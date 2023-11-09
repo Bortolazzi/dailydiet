@@ -1,3 +1,9 @@
+import { useCallback, useState } from 'react';
+import { Alert } from 'react-native';
+import { ArrowLeft } from 'phosphor-react-native';
+import { useTheme } from 'styled-components/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
 import { 
     Container, 
     Panel, 
@@ -10,47 +16,63 @@ import {
     BackIconContainer 
 } from './styles';
 
-import { useTheme } from 'styled-components/native';
-import { ArrowLeft } from 'phosphor-react-native';
-import { useNavigation } from '@react-navigation/native';
+import * as mealRepository from '@storage/repositories/mealRepository';
+import { StatisticData } from '@models/index';
+
+import { isDietGoal } from '@utils/dietGoal';
+import { toPercentage } from '@utils/convertHelper';
 
 export function Statistics() {
     const theme = useTheme();
-
     const navigation = useNavigation();
+
+    const [statistic, setStatistic] = useState<StatisticData>({} as StatisticData);
 
     function handleGoBack() {
         navigation.navigate('home');
     }
 
-    const containerType = 0 > 1 ? 'SUCCESS' : 'DANGER';
+    const containerType = isDietGoal(statistic.percentage) ? 'SUCCESS' : 'DANGER';
+
+    async function fetchStatisticAsync() {
+        try {
+            const statisticData = await mealRepository.getStatistcsAsync();
+            setStatistic(statisticData);
+        } catch (exception) {
+            Alert.alert('Estatísticas', 'Ocorreu um erro ao carregar as estatisticas');
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        fetchStatisticAsync();
+      }, []));
 
     return (
         <Container type={containerType}>
             <Header>
                 <BackIconContainer onPress={handleGoBack}>
-                    <ArrowLeft size={24} weight="regular" color={containerType === 'SUCCESS' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK} />
+                    <ArrowLeft size={24} weight="regular" color={isDietGoal(statistic.percentage) ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK} />
                 </BackIconContainer>
-                <Percentage>100%</Percentage>
+                <Percentage>{toPercentage(statistic.percentage)}</Percentage>
                 <DescriptionLabel>das refeições dentro da dieta</DescriptionLabel>
             </Header>
 
             <Page>
                 <Panel type='PRIMARY' size='FULL' >
-                    <QuantityLabel>22</QuantityLabel>
+                    <QuantityLabel>{statistic.maxSequence}</QuantityLabel>
                     <DescriptionLabel>melhor sequência de pratos dentro da dieta</DescriptionLabel>
                 </Panel>
                 <Panel type='PRIMARY' size='FULL' >
-                    <QuantityLabel>109</QuantityLabel>
+                    <QuantityLabel>{statistic.total}</QuantityLabel>
                     <DescriptionLabel>refeições registradas</DescriptionLabel>
                 </Panel>
                 <Information>
                     <Panel type='SUCCESS' size='HALF' >
-                        <QuantityLabel>99</QuantityLabel>
+                        <QuantityLabel>{statistic.totalSuccess}</QuantityLabel>
                         <DescriptionLabel>refeições dentro da dieta</DescriptionLabel>
                     </Panel>
                     <Panel type='DANGER' size='HALF' >
-                        <QuantityLabel>10</QuantityLabel>
+                        <QuantityLabel>{statistic.totalFailed}</QuantityLabel>
                         <DescriptionLabel>refeições fora da dieta</DescriptionLabel>
                     </Panel>
                 </Information>

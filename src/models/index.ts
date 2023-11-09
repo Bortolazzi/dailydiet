@@ -8,14 +8,15 @@ export type MealData = {
     fullDate: Date;
 }
 
-export type StatisticRecord = {
+export type MealByDate = {
+    title: string;
+    data: MealData[]
+}
+
+export type StatisticData = {
     total: number;
     totalFailed: number;
     totalSuccess: number;
     maxSequence: number;
-}
-
-export type MealByDate = {
-    title: string;
-    data: MealData[]
+    percentage: number;
 }

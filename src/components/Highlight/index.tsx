@@ -20,7 +20,7 @@ export function Highlight(props: HighlightProps) {
     navigation.navigate('statistics');
   }
 
-  const { percentage = 0, subtitle = '' } = props
+  const { percentage = 0, subtitle = '' } = props;
   const dietGoal = isDietGoal(percentage);
 
   return (
